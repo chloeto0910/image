@@ -1,0 +1,88 @@
+import os
+from PIL import Image
+
+# Define folders
+jpeg_folder = 'jpeg'
+png_folder = 'png'
+thumbnail_folder = 'thumbnails'
+rotation_folder = 'rotation'
+bw_folder = 'black_and_white'
+blur_folder = 'blur'
+
+# Create folders if they don't exist
+if not os.path.exists(jpeg_folder):
+    os.makedirs(jpeg_folder)
+if not os.path.exists(png_folder):
+    os.makedirs(png_folder)
+if not os.path.exists(thumbnail_folder):
+    os.makedirs(thumbnail_folder)
+if not os.path.exists(rotation_folder):
+    os.makedirs(rotation_folder)
+if not os.path.exists(bw_folder):
+    os.makedirs(bw_folder)
+if not os.path.exists(blur_folder):
+    os.makedirs(blur_folder)
+
+# Save 10 different jpeg images into a folder
+for i in range(1, 11):
+    image = Image.new('RGB', (200, 200), (255, 255, 255))
+    image.save(f'{jpeg_folder}/image_{i}.jpeg')
+
+# User can open certain images
+image_name = input('Enter image name: ')
+image_path = f'{jpeg_folder}/{image_name}.jpeg'
+if os.path.exists(image_path):
+    image = Image.open(image_path)
+    image.show()
+else:
+    print('Image not found')
+
+# User can save jpeg images to png. All new png files created will be moved to png folder
+image_name = input('Enter image name: ')
+image_path = f'{jpeg_folder}/{image_name}.jpeg'
+if os.path.exists(image_path):
+    image = Image.open(image_path)
+    png_path = f'{png_folder}/{image_name}.png'
+    image.save(png_path)
+    os.remove(image_path)
+else:
+    print('Image not found')
+
+# User can view all current jpeg and png images in their directories
+jpeg_images = os.listdir(jpeg_folder)
+png_images = os.listdir(png_folder)
+print('JPEG images:')
+print(jpeg_images)
+print('PNG images:')
+print(png_images)
+
+# User should decide what size thumbnails (200, 400, or 600) they want. Save given size to folder of that size (jpeg)
+image_name = input('Enter image name: ')
+image_path = f'{jpeg_folder}/{image_name}.jpeg'
+if os.path.exists(image_path):
+    image = Image.open(image_path)
+    size = int(input('Enter thumbnail size (200, 400, or 600): '))
+    thumbnail_path = f'{thumbnail_folder}/{size}/{image_name}.jpeg'
+    if not os.path.exists(os.path.dirname(thumbnail_path)):
+        os.makedirs(os.path.dirname(thumbnail_path))
+    image.thumbnail((size, size))
+    image.save(thumbnail_path)
+else:
+    print('Image not found')
+
+# User should be given an option of rotating an image to a given length (users choice). Save this rotated image in a “Rotation folder”
+image_name = input('Enter image name: ')
+image_path = f'{jpeg_folder}/{image_name}.jpeg'
+if os.path.exists(image_path):
+    image = Image.open(image_path)
+    angle = int(input('Enter rotation angle: '))
+    rotated_image = image.rotate(angle)
+    rotation_path = f'{rotation_folder}/{image_name}.jpeg'
+    rotated_image.save(rotation_path)
+else:
+    print('Image not found')
+
+# User should be given an option to turn image to black and white. Save these pictures in a “Black & White” folder
+image_name = input('Enter image name: ')
+image_path = f'{jpeg_folder}/{image_name}.jpeg'
+
